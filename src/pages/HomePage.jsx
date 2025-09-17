@@ -46,6 +46,33 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Sections inspired by MasterTao with slight changes */}
+      <section className="bg-blue-50">
+        <div className="container-p py-12">
+          <h2 className="text-2xl font-bold">3 простых шага</h2>
+          <div className="mt-6 grid md:grid-cols-3 gap-6">
+            {[{n:'01',t:'Формирование заказа',d:'Зарегистрируйтесь и заполните заявку.'},{n:'02',t:'Оплата',d:'Оплатите удобным способом.'},{n:'03',t:'Готово',d:'Мы доставим в ваш город.'}].map(s=> (
+              <div key={s.n} className="p-6 rounded-xl border bg-white">
+                <div className="text-3xl font-extrabold text-brand-blue">{s.n}</div>
+                <div className="mt-2 font-bold">{s.t}</div>
+                <div className="mt-1 text-gray-700">{s.d}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="container-p py-12">
+          <h2 className="text-2xl font-bold">5 этапов доставки</h2>
+          <ol className="mt-6 grid md:grid-cols-5 gap-4 list-decimal list-inside">
+            {['Приём на складе в Китае','Проверка и пересчёт','Счёт за доставку','Таможенная очистка','Доставка до вашего города'].map((t,i)=> (
+              <li key={i} className="p-4 rounded-xl border bg-white">{t}</li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       <section className="bg-blue-50">
         <div className="container-p py-12 text-center">
           <h2 className="text-2xl font-bold">Готовы к расчёту стоимости?</h2>
