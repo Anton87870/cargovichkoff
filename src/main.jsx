@@ -9,6 +9,9 @@ import OrderPage from './pages/OrderPage.jsx';
 import PaymentPage from './pages/PaymentPage.jsx';
 import TermsPage from './pages/TermsPage.jsx';
 import HelpPage from './pages/HelpPage.jsx';
+import AccountPage from './pages/AccountPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import { AuthProvider } from './lib/auth.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,6 +23,8 @@ const router = createBrowserRouter([
       { path: 'payment', element: <PaymentPage /> },
       { path: 'terms', element: <TermsPage /> },
       { path: 'help', element: <HelpPage /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'account', element: <AccountPage /> },
     ],
   },
 ]);
@@ -27,7 +32,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HelmetProvider>
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </HelmetProvider>
   </React.StrictMode>
 );
