@@ -12,8 +12,6 @@ import HelpPage from './pages/HelpPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import { AuthProvider } from './lib/auth.jsx';
-import ContactsPage from './pages/ContactsPage.jsx';
-import AboutPage from './pages/AboutPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,8 +25,6 @@ const router = createBrowserRouter([
       { path: 'help', element: <HelpPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'account', element: <AccountPage /> },
-      { path: 'contacts', element: <ContactsPage /> },
-      { path: 'about', element: <AboutPage /> },
     ],
   },
 ]);
