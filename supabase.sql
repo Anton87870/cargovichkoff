@@ -19,6 +19,35 @@ create table if not exists public.orders (
   user_id uuid references auth.users(id)
 );
 
+-- If the table existed before without user_id, add it now
+alter table public.orders add column if not exists user_id uuid references auth.users(id);
+create index if not exists orders_user_id_idx on public.orders(user_id);
+
+-- Callback requests (reverse calls)
+create table if not exists public.callbacks (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  phone text not null,
+  user_id uuid references auth.users(id)
+);
+alter table public.callbacks enable row level security;
+
+do $$ begin
+  drop policy if exists "insert callbacks anon" on public.callbacks;
+  create policy "insert callbacks anon" on public.callbacks for insert to anon with check (user_id is null);
+exception when undefined_object then null; end $$;
+
+do $$ begin
+  drop policy if exists "insert callbacks auth" on public.callbacks;
+  create policy "insert callbacks auth" on public.callbacks for insert to authenticated with check (user_id = auth.uid());
+exception when undefined_object then null; end $$;
+
+do $$ begin
+  drop policy if exists "select callbacks own" on public.callbacks;
+  create policy "select callbacks own" on public.callbacks for select to authenticated using (user_id = auth.uid());
+exception when undefined_object then null; end $$;
+
 -- Enable RLS
 alter table public.orders enable row level security;
 alter table public.profiles enable row level security;
