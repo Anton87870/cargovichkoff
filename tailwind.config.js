@@ -12,6 +12,8 @@ export default {
           red: '#E11D48',
           white: '#FFFFFF',
           dark: '#0B1324',
+          black: '#0B0B0B',
+          gold: '#C9A227',
         },
       },
     },
