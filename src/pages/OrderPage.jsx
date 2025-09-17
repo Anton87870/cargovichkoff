@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { supabase } from '../lib/supabaseClient.js';
+import { getSupabase } from '../lib/supabaseClient.js';
 
 function generateOrderNumber() {
   const now = new Date();
@@ -22,6 +22,10 @@ export default function OrderPage() {
     setSubmitting(true);
     setError('');
     try {
+      const supabase = getSupabase();
+      if (!supabase) {
+        throw new Error('Не настроен доступ к базе. Укажите VITE_SUPABASE_URL и VITE_SUPABASE_ANON_KEY.');
+      }
       if (!form.productType || !form.dimensions || !form.fromLocation || !form.toLocation) {
         throw new Error('Пожалуйста, заполните все поля');
       }
