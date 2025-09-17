@@ -8,34 +8,34 @@ function Header() {
   const [open, setOpen] = React.useState(false);
   const { user } = useAuth();
   return (
-    <header className="border-b border-gray-200 sticky top-0 z-40 bg-white/90 backdrop-blur">
+    <header className="border-b border-brand-gold/20 sticky top-0 z-40 bg-black/80 backdrop-blur">
       <div className="container-p flex items-center justify-between py-3">
         <NavLink to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded bg-brand-blue" />
-          <span className="font-bold text-brand-blue">Карговичкоф</span>
+          <div className="w-8 h-8 rounded bg-brand-gold" />
+          <span className="font-bold text-brand-gold">Карговичкоф</span>
         </NavLink>
-        <nav className="hidden md:flex items-center gap-6">
-          <NavLink to="/" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Главная</NavLink>
-          <NavLink to="/order" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Сделать заказ</NavLink>
-          <NavLink to="/payment" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Оплата</NavLink>
-          <NavLink to="/terms" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Условия</NavLink>
-          <NavLink to="/help" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Помощь</NavLink>
+        <nav className="hidden md:flex items-center gap-6 text-white">
+          <NavLink to="/" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Главная</NavLink>
+          <NavLink to="/order" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Сделать заказ</NavLink>
+          <NavLink to="/payment" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Оплата</NavLink>
+          <NavLink to="/terms" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Условия</NavLink>
+          <NavLink to="/help" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Помощь</NavLink>
           {user ? (
-            <NavLink to="/account" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Кабинет</NavLink>
+            <NavLink to="/account" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Кабинет</NavLink>
           ) : (
-            <NavLink to="/login" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Войти</NavLink>
+            <NavLink to="/login" className={({isActive})=>`hover:text-brand-gold ${isActive?'text-brand-gold font-semibold':''}`}>Войти</NavLink>
           )}
         </nav>
         <div className="hidden md:block">
-          <NavLink to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow hover:opacity-90">Сделать заказ</NavLink>
+          <NavLink to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-gold text-black font-semibold shadow hover:opacity-90">Сделать заказ</NavLink>
         </div>
-        <button aria-label="menu" className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded border" onClick={()=>setOpen(v=>!v)}>
+        <button aria-label="menu" className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded border border-brand-gold text-white" onClick={()=>setOpen(v=>!v)}>
           <span className="i">≡</span>
         </button>
       </div>
       {open && (
-        <div className="md:hidden border-t border-gray-200 bg-white">
-          <div className="container-p py-3 flex flex-col gap-3">
+        <div className="md:hidden border-t border-brand-gold/20 bg-black">
+          <div className="container-p py-3 flex flex-col gap-3 text-white">
             <NavLink onClick={()=>setOpen(false)} to="/">Главная</NavLink>
             <NavLink onClick={()=>setOpen(false)} to="/order">Сделать заказ</NavLink>
             <NavLink onClick={()=>setOpen(false)} to="/payment">Оплата</NavLink>
@@ -46,7 +46,7 @@ function Header() {
             ) : (
               <NavLink onClick={()=>setOpen(false)} to="/login">Войти</NavLink>
             )}
-            <NavLink onClick={()=>setOpen(false)} to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow w-max">Сделать заказ</NavLink>
+            <NavLink onClick={()=>setOpen(false)} to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-gold text-black font-semibold shadow w-max">Сделать заказ</NavLink>
           </div>
         </div>
       )}
