@@ -7,17 +7,11 @@ html, body, #root {
 }
 
 body {
-  @apply bg-brand-black text-[#F5F5F5] antialiased font-sans;
+  @apply bg-brand-white text-brand-dark antialiased;
 }
 
 .container-p {
   @apply container mx-auto px-4 sm:px-6 lg:px-8;
 }
-
-/* Premium utilities */
-.gold-border { @apply border border-brand-gold/40; }
-.gold-glow:hover { box-shadow: 0 0 0 1px rgba(212,175,55,.5), 0 10px 30px rgba(212,175,55,.25); }
-.gold-text { color: #D4AF37; }
-.heading { @apply font-display; }
 
 

@@ -11,6 +11,11 @@ import TermsPage from './pages/TermsPage.jsx';
 import HelpPage from './pages/HelpPage.jsx';
 import AccountPage from './pages/AccountPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import CalculatorPage from './pages/CalculatorPage.jsx';
+import TrackingPage from './pages/TrackingPage.jsx';
+import ServicesPage from './pages/ServicesPage.jsx';
+import ContactsPage from './pages/ContactsPage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
 import { AuthProvider } from './lib/auth.jsx';
 
 const router = createBrowserRouter([
@@ -25,6 +30,11 @@ const router = createBrowserRouter([
       { path: 'help', element: <HelpPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'account', element: <AccountPage /> },
+              { path: 'calculator', element: <CalculatorPage /> },
+              { path: 'tracking', element: <TrackingPage /> },
+              { path: 'services', element: <ServicesPage /> },
+              { path: 'contacts', element: <ContactsPage /> },
+              { path: 'about', element: <AboutPage /> },
     ],
   },
 ]);
