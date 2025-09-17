@@ -2,9 +2,11 @@ import React from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import RateTicker from '../components/RateTicker.jsx';
+import { useAuth } from '../lib/auth.jsx';
 
 function Header() {
   const [open, setOpen] = React.useState(false);
+  const { user } = useAuth();
   return (
     <header className="border-b border-gray-200 sticky top-0 z-40 bg-white/90 backdrop-blur">
       <div className="container-p flex items-center justify-between py-3">
@@ -18,6 +20,11 @@ function Header() {
           <NavLink to="/payment" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Оплата</NavLink>
           <NavLink to="/terms" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Условия</NavLink>
           <NavLink to="/help" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Помощь</NavLink>
+          {user ? (
+            <NavLink to="/account" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Кабинет</NavLink>
+          ) : (
+            <NavLink to="/login" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Войти</NavLink>
+          )}
         </nav>
         <div className="hidden md:block">
           <NavLink to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow hover:opacity-90">Сделать заказ</NavLink>
@@ -34,6 +41,11 @@ function Header() {
             <NavLink onClick={()=>setOpen(false)} to="/payment">Оплата</NavLink>
             <NavLink onClick={()=>setOpen(false)} to="/terms">Условия</NavLink>
             <NavLink onClick={()=>setOpen(false)} to="/help">Помощь</NavLink>
+            {user ? (
+              <NavLink onClick={()=>setOpen(false)} to="/account">Кабинет</NavLink>
+            ) : (
+              <NavLink onClick={()=>setOpen(false)} to="/login">Войти</NavLink>
+            )}
             <NavLink onClick={()=>setOpen(false)} to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow w-max">Сделать заказ</NavLink>
           </div>
         </div>
