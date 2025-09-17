@@ -30,7 +30,7 @@ export default function RateTicker() {
   }, []);
 
   return (
-    <div className="w-full bg-black text-brand-gold border-b border-brand-gold/20">
+    <div className="w-full bg-brand-blue text-white">
       <div className="container-p py-2 text-sm flex flex-wrap items-center gap-4">
         <div className="font-semibold">Курс CNY (+3%):</div>
         {error && <div className="text-red-200">{error}</div>}
