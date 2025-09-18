@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
 const cities = [
-  'Гуанчжоу', 'Шэньчжэнь', 'Шанхай', 'Пекин', 'Иу', 'Ханчжоу', 'Нинбо', 'Циндао'
+  'Гуанчжоу', 'Шэньчжэнь', 'Шанхай', 'Пекин', 'Иу', 'Ханчжоу', 'Нинбо', 'Циндао', 'Другое'
 ];
 
 const destinations = [
-  'Москва', 'Санкт-Петербург', 'Екатеринбург', 'Новосибирск', 'Казань', 'Нижний Новгород', 'Челябинск', 'Самара'
+  'Москва', 'Санкт-Петербург', 'Екатеринбург', 'Новосибирск', 'Казань', 'Нижний Новгород', 'Челябинск', 'Самара', 'Другое'
 ];
 
 const cargoTypes = [
@@ -28,6 +28,8 @@ export default function CostCalculator() {
   const [formData, setFormData] = useState({
     fromCity: '',
     toCity: '',
+    customFromCity: '',
+    customToCity: '',
     weight: '',
     volume: '',
     cargoType: '',
@@ -38,6 +40,7 @@ export default function CostCalculator() {
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [showContactOptions, setShowContactOptions] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -72,7 +75,7 @@ export default function CostCalculator() {
       
       // Add services
       if (formData.packaging) baseCost += 500;
-      if (formData.customs) baseCost += 3000;
+      if (formData.customs) baseCost += 15000;
       
       // Add margin
       baseCost *= 1.1;
@@ -84,14 +87,20 @@ export default function CostCalculator() {
         cargo: cargo.label
       });
       setLoading(false);
+      setShowContactOptions(true);
     }, 1000);
+  };
+
+  const handleGetQuote = (method) => {
+    // Здесь можно добавить логику отправки запроса на получение КП
+    alert(`Запрос на получение коммерческого предложения через ${method} отправлен!`);
   };
 
   return (
     <section className="py-16 bg-gray-50">
       <div className="container-p">
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-brand-dark mb-4">
             Калькулятор стоимости
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -116,6 +125,15 @@ export default function CostCalculator() {
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
+                {formData.fromCity === 'Другое' && (
+                  <input
+                    type="text"
+                    value={formData.customFromCity}
+                    onChange={(e) => handleInputChange('customFromCity', e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent mt-2"
+                    placeholder="Укажите город отправления"
+                  />
+                )}
               </div>
               
               <div>
@@ -132,6 +150,15 @@ export default function CostCalculator() {
                     <option key={city} value={city}>{city}</option>
                   ))}
                 </select>
+                {formData.toCity === 'Другое' && (
+                  <input
+                    type="text"
+                    value={formData.customToCity}
+                    onChange={(e) => handleInputChange('customToCity', e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent mt-2"
+                    placeholder="Укажите город назначения"
+                  />
+                )}
               </div>
             </div>
             
@@ -206,7 +233,7 @@ export default function CostCalculator() {
                   onChange={(e) => handleInputChange('packaging', e.target.checked)}
                   className="mr-3 h-4 w-4 text-brand-blue focus:ring-brand-blue border-gray-300 rounded"
                 />
-                <span className="text-sm text-gray-700">Услуги упаковки (+500₽)</span>
+                <span className="text-sm text-gray-700">Услуги упаковки (от 500₽)</span>
               </label>
               
               <label className="flex items-center">
@@ -216,7 +243,7 @@ export default function CostCalculator() {
                   onChange={(e) => handleInputChange('customs', e.target.checked)}
                   className="mr-3 h-4 w-4 text-brand-blue focus:ring-brand-blue border-gray-300 rounded"
                 />
-                <span className="text-sm text-gray-700">Таможенное оформление (+3000₽)</span>
+                <span className="text-sm text-gray-700">Таможенное оформление (15000₽ за декларацию, при условии предоставления всех документов)</span>
               </label>
             </div>
             
@@ -234,11 +261,11 @@ export default function CostCalculator() {
                   <div className="text-red-600 text-center">{result.error}</div>
                 ) : (
                   <div className="text-center">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Результат расчёта</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <h3 className="text-2xl font-bold text-brand-dark mb-4">Результат расчёта</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                       <div className="bg-white p-4 rounded-lg">
                         <div className="text-sm text-gray-600">Стоимость доставки</div>
-                        <div className="text-2xl font-bold text-brand-gold">{result.cost.toLocaleString()}₽</div>
+                        <div className="text-2xl font-bold text-brand-blue">{result.cost.toLocaleString()}₽</div>
                       </div>
                       <div className="bg-white p-4 rounded-lg">
                         <div className="text-sm text-gray-600">Срок доставки</div>
@@ -249,9 +276,33 @@ export default function CostCalculator() {
                         <div className="text-lg font-semibold text-gray-900">{result.transport}</div>
                       </div>
                     </div>
-                    <button className="mt-6 px-8 py-3 bg-brand-gold text-black font-bold rounded-lg hover:bg-yellow-500 transition-colors">
-                      Получить коммерческое предложение
-                    </button>
+                    
+                    {showContactOptions && (
+                      <div className="bg-white p-6 rounded-lg">
+                        <h4 className="text-lg font-semibold text-brand-dark mb-4">Получить коммерческое предложение</h4>
+                        <p className="text-gray-600 mb-4">Выберите удобный способ получения КП:</p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                          <button 
+                            onClick={() => handleGetQuote('email')}
+                            className="px-6 py-3 bg-brand-blue text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                          >
+                            📧 На почту
+                          </button>
+                          <button 
+                            onClick={() => handleGetQuote('whatsapp')}
+                            className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
+                          >
+                            📱 WhatsApp
+                          </button>
+                          <button 
+                            onClick={() => handleGetQuote('telegram')}
+                            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+                          >
+                            ✈️ Telegram
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
