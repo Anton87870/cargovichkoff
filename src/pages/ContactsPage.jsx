@@ -80,7 +80,7 @@ export default function ContactsPage() {
       <Helmet>
         <title>Контакты и офисы — Карговичкоф</title>
         <meta name="description" content="Наши офисы в России и склады в Китае. Адреса, телефоны, email, график работы. Свяжитесь с нами для консультации по доставке." />
-        <script src="https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU" type="text/javascript"></script>
+        <script src="https://api-maps.yandex.ru/2.1/?apikey=429137e1-c6ed-40f5-b52d-85fe7cd76a78&lang=ru_RU" type="text/javascript"></script>
       </Helmet>
       
       <div className="py-16 bg-gray-50">
