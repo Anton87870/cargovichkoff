@@ -6,7 +6,7 @@ import { useAuth } from '../lib/auth.jsx';
 
 function Header() {
   const [open, setOpen] = React.useState(false);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   return (
     <header className="border-b border-gray-200 sticky top-0 z-40 bg-white/90 backdrop-blur">
       <div className="container-p flex items-center justify-between py-3">
@@ -21,11 +21,13 @@ function Header() {
                   <NavLink to="/tracking" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Отслеживание</NavLink>
                   <NavLink to="/about" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>О компании</NavLink>
                   <NavLink to="/contacts" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Контакты</NavLink>
-          {user ? (
-            <NavLink to="/account" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Кабинет</NavLink>
-          ) : (
-            <NavLink to="/login" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Войти</NavLink>
-          )}
+                  {loading ? (
+                    <div className="text-gray-400">Загрузка...</div>
+                  ) : user ? (
+                    <NavLink to="/account" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Кабинет</NavLink>
+                  ) : (
+                    <NavLink to="/login" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Войти</NavLink>
+                  )}
         </nav>
         <div className="hidden md:block">
           <NavLink to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow hover:opacity-90">Сделать заказ</NavLink>
@@ -43,11 +45,13 @@ function Header() {
                     <NavLink onClick={()=>setOpen(false)} to="/tracking">Отслеживание</NavLink>
                     <NavLink onClick={()=>setOpen(false)} to="/about">О компании</NavLink>
                     <NavLink onClick={()=>setOpen(false)} to="/contacts">Контакты</NavLink>
-            {user ? (
-              <NavLink onClick={()=>setOpen(false)} to="/account">Кабинет</NavLink>
-            ) : (
-              <NavLink onClick={()=>setOpen(false)} to="/login">Войти</NavLink>
-            )}
+                    {loading ? (
+                      <div className="text-gray-400">Загрузка...</div>
+                    ) : user ? (
+                      <NavLink onClick={()=>setOpen(false)} to="/account">Кабинет</NavLink>
+                    ) : (
+                      <NavLink onClick={()=>setOpen(false)} to="/login">Войти</NavLink>
+                    )}
             <NavLink onClick={()=>setOpen(false)} to="/order" className="inline-flex items-center px-4 py-2 rounded bg-brand-red text-white font-semibold shadow w-max">Сделать заказ</NavLink>
           </div>
         </div>

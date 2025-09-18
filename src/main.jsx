@@ -18,6 +18,7 @@ import ServicesPage from './pages/ServicesPage.jsx';
 import ContactsPage from './pages/ContactsPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import { AuthProvider } from './lib/auth.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,11 +46,13 @@ initializePerformanceOptimizations();
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <HelmetProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );
 

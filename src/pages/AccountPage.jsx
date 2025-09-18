@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../lib/auth.jsx';
 import { getSupabase } from '../lib/supabaseClient.js';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 function generateOrderNumber() {
   const now = new Date();
@@ -15,6 +15,7 @@ function generateOrderNumber() {
 
 export default function AccountPage() {
   const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
   const [orders, setOrders] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [form, setForm] = React.useState({ productType: '', dimensions: '', fromLocation: '', toLocation: '' });
@@ -84,8 +85,9 @@ export default function AccountPage() {
       const supabase = getSupabase();
       if (supabase) {
         await supabase.auth.signOut();
+        // Используем React Router для навигации
+        navigate('/', { replace: true });
       }
-      // Редирект произойдет автоматически через AuthProvider
     } catch (error) {
       console.error('Ошибка при выходе:', error);
       setIsSigningOut(false);

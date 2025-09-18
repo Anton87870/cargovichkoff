@@ -23,7 +23,8 @@ export function AuthProvider({ children }) {
     });
 
     // Слушаем изменения состояния аутентификации
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, sess) => {
+      console.log('Auth state change:', event, sess);
       setSession(sess);
       setUser(sess?.user || null);
       setLoading(false);
