@@ -144,23 +144,6 @@ export default function ContactsPage() {
                 <textarea rows="4" className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent" placeholder="Опишите ваш груз или задайте вопрос"></textarea>
               </div>
               
-              {/* QR Code for WeChat */}
-              <div className="md:col-span-2 text-center">
-                <div className="bg-gray-50 rounded-lg p-6 mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-3">По вопросам обращаться в WeChat</h3>
-                  <div className="flex justify-center">
-                    <div className="bg-white p-4 rounded-lg shadow-sm">
-                      <img 
-                        src="/images/wechat-qr.svg" 
-                        alt="QR код для WeChat" 
-                        className="w-32 h-32 mx-auto"
-                      />
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2">Отсканируйте QR-код для добавления в WeChat</p>
-                </div>
-              </div>
-              
               <div className="md:col-span-2 text-center">
                 <button type="submit" className="px-8 py-3 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-700 transition-colors">
                   Отправить заявку

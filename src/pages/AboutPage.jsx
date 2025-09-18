@@ -168,9 +168,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* Partners Section */}
-      <PartnersSection />
     </>
   );
 }
