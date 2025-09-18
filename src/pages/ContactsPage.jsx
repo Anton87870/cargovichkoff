@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 const offices = [
   {
     city: 'Санкт-Петербург',
-    address: 'г. СПб, Савушкина 83к3',
+    address: 'г. Санкт-Петербург, ул. Савушкина, д. 83, корп. 3',
     phone: '+7 (812) 234-56-78',
     email: 'spb@kargovichkof.com',
     hours: 'Пн-Пт: 9:00-18:00',
@@ -38,41 +38,66 @@ const warehouses = [
 
 export default function ContactsPage() {
   useEffect(() => {
-    // Инициализация Яндекс карты
-    if (window.ymaps) {
-      window.ymaps.ready(() => {
-        const map = new window.ymaps.Map('map', {
-          center: [59.985, 30.2], // Координаты Санкт-Петербурга
-          zoom: 12,
-          controls: ['zoomControl', 'fullscreenControl']
-        });
+    // Функция инициализации карты
+    const initMap = () => {
+      if (window.ymaps) {
+        window.ymaps.ready(() => {
+          try {
+            const map = new window.ymaps.Map('map', {
+              center: [59.985, 30.2], // Координаты Санкт-Петербурга
+              zoom: 12,
+              controls: ['zoomControl', 'fullscreenControl']
+            });
 
-        // Добавляем маркер офиса
-        const officeMarker = new window.ymaps.Placemark(
-          [59.985, 30.2], // Примерные координаты для Савушкина 83к3
-          {
-            balloonContent: `
-              <div style="padding: 10px;">
-                <h3 style="margin: 0 0 10px 0; color: #0A39A4;">Карговичкоф</h3>
-                <p style="margin: 0 0 5px 0;"><strong>Адрес:</strong> г. СПб, Савушкина 83к3</p>
-                <p style="margin: 0 0 5px 0;"><strong>Телефон:</strong> +7 (812) 234-56-78</p>
-                <p style="margin: 0 0 5px 0;"><strong>Email:</strong> spb@kargovichkof.com</p>
-                <p style="margin: 0;"><strong>Часы работы:</strong> Пн-Пт: 9:00-18:00</p>
-              </div>
-            `,
-            hintContent: 'Карговичкоф - Главный офис'
-          },
-          {
-            iconLayout: 'default#image',
-            iconImageHref: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMzlBNCIvPgo8cGF0aCBkPSJNMTAgMjBIMjJWMTRIMTBWMjBaIiBmaWxsPSIjRTExRDQ4Ii8+CjxwYXRoIGQ9Ik0yMiAxNEgyNFYxOEgyMlYxNFoiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTggMThIMTBWMTRIOFYxOFoiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTEwIDE0TDEyIDEwSDIwTDIyIDE0SDEwWiIgZmlsbD0iI0UxMUQ0OCIvPgo8Y2lyY2xlIGN4PSIxMyIgY3k9IjIyIiByPSIyIiBmaWxsPSIjRTExRDQ4Ii8+CjxjaXJjbGUgY3g9IjE5IiBjeT0iMjIiIHI9IjIiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTE0IDI2TDE2IDI2TDE2IDI4TDE0IDI4TDE0IDI2WiIgZmlsbD0iI0UxMUQ0OCIvPgo8cGF0aCBkPSJNMTYgMjZMMTggMjZMMTggMjhMMTYgMjhMMTYgMjZaIiBmaWxsPSIjRTExRDQ4Ii8+Cjx0ZXh0IHg9IjE2IiB5PSIyOCIgZm9udC1mYW1pbHk9IkludGVyLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBhbGlnbm1lbnQtYmFzZWxpbmU9ImJhc2VsaW5lIj7QmtCwPC90ZXh0Pgo8L3N2Zz4K',
-            iconImageSize: [32, 32],
-            iconImageOffset: [-16, -16]
+            // Добавляем маркер офиса
+            const officeMarker = new window.ymaps.Placemark(
+              [59.985, 30.2], // Примерные координаты для Савушкина 83к3
+              {
+                balloonContent: `
+                  <div style="padding: 10px;">
+                    <h3 style="margin: 0 0 10px 0; color: #0A39A4;">Карговичкоф</h3>
+                    <p style="margin: 0 0 5px 0;"><strong>Адрес:</strong> г. Санкт-Петербург, ул. Савушкина, д. 83, корп. 3</p>
+                    <p style="margin: 0 0 5px 0;"><strong>Телефон:</strong> +7 (812) 234-56-78</p>
+                    <p style="margin: 0 0 5px 0;"><strong>Email:</strong> spb@kargovichkof.com</p>
+                    <p style="margin: 0;"><strong>Часы работы:</strong> Пн-Пт: 9:00-18:00</p>
+                  </div>
+                `,
+                hintContent: 'Карговичкоф - Главный офис'
+              },
+              {
+                iconLayout: 'default#image',
+                iconImageHref: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBBMzlBNCIvPgo8cGF0aCBkPSJNMTAgMjBIMjJWMTRIMTBWMjBaIiBmaWxsPSIjRTExRDQ4Ii8+CjxwYXRoIGQ9Ik0yMiAxNEgyNFYxOEgyMlYxNFoiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTggMThIMTBWMTRIOFYxOFoiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTEwIDE0TDEyIDEwSDIwTDIyIDE0SDEwWiIgZmlsbD0iI0UxMUQ0OCIvPgo8Y2lyY2xlIGN4PSIxMyIgY3k9IjIyIiByPSIyIiBmaWxsPSIjRTExRDQ4Ii8+CjxjaXJjbGUgY3g9IjE5IiBjeT0iMjIiIHI9IjIiIGZpbGw9IiNFMTFENDgiLz4KPHBhdGggZD0iTTE0IDI2TDE2IDI2TDE2IDI4TDE0IDI4TDE0IDI2WiIgZmlsbD0iI0UxMUQ0OCIvPgo8cGF0aCBkPSJNMTYgMjZMMTggMjZMMTggMjhMMTYgMjhMMTYgMjZaIiBmaWxsPSIjRTExRDQ4Ii8+Cjx0ZXh0IHg9IjE2IiB5PSIyOCIgZm9udC1mYW1pbHk9IkludGVyLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjRkZGRkZGIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBhbGlnbm1lbnQtYmFzZWxpbmU9ImJhc2VsaW5lIj7QmtCwPC90ZXh0Pgo8L3N2Zz4K',
+                iconImageSize: [32, 32],
+                iconImageOffset: [-16, -16]
+              }
+            );
+
+            map.geoObjects.add(officeMarker);
+          } catch (error) {
+            console.error('Ошибка инициализации карты:', error);
+            // Показываем fallback если карта не загрузилась
+            const mapContainer = document.getElementById('map');
+            if (mapContainer) {
+              mapContainer.innerHTML = `
+                <div class="flex items-center justify-center h-full bg-gray-100 rounded-lg">
+                  <div class="text-center text-gray-500">
+                    <div class="text-4xl mb-4">🗺️</div>
+                    <div>Карта временно недоступна</div>
+                    <div class="text-sm mt-2">📍 г. Санкт-Петербург, ул. Савушкина, д. 83, корп. 3</div>
+                  </div>
+                </div>
+              `;
+            }
           }
-        );
+        });
+      } else {
+        // Если API еще не загружен, ждем
+        setTimeout(initMap, 1000);
+      }
+    };
 
-        map.geoObjects.add(officeMarker);
-      });
-    }
+    // Запускаем инициализацию
+    initMap();
   }, []);
 
   return (
@@ -126,7 +151,7 @@ export default function ContactsPage() {
                   <div className="flex justify-center">
                     <div className="bg-white p-4 rounded-lg shadow-sm">
                       <img 
-                        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8IS0tIFNRIGNvZGUgcGF0dGVybiAtLT4KPHJlY3QgeD0iMjAiIHk9IjIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIGZpbGw9ImJsYWNrIi8+CjxyZWN0IHg9IjE0MCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iYmxhY2siLz4KPHJlY3QgeD0iMjAiIHk9IjE0MCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBmaWxsPSJibGFjayIvPgo8IS0tIENlbnRlciBpY29uIC0tPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjE1IiBmaWxsPSJibGFjayIvPgo8IS0tIFNpbXBsZSBwYXR0ZXJuIGZvciBkZW1vIC0tPgo8cmVjdCB4PSI0MCIgeT0iNDAiIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiBmaWxsPSJub25lIiBzdHJva2U9ImJsYWNrIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+" 
+                        src="https://via.placeholder.com/200x200/FFFFFF/000000?text=QR+Code" 
                         alt="QR код для WeChat" 
                         className="w-32 h-32 mx-auto"
                       />
@@ -215,7 +240,7 @@ export default function ContactsPage() {
               ></div>
             </div>
             <div className="mt-4 text-center text-sm text-gray-600">
-              <p>📍 г. СПб, Савушкина 83к3 - Главный офис</p>
+              <p>📍 г. Санкт-Петербург, ул. Савушкина, д. 83, корп. 3 - Главный офис</p>
             </div>
           </div>
         </div>
