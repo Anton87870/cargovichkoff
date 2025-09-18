@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Фон -->
+  <rect width="32" height="32" rx="6" fill="#0A39A4"/>
+  
+  <!-- Грузовик -->
+  <g transform="translate(4, 8)">
+    <!-- Кабина -->
+    <rect x="2" y="4" width="8" height="6" rx="1" fill="white"/>
+    <!-- Кузов -->
+    <rect x="10" y="2" width="12" height="8" rx="1" fill="white"/>
+    <!-- Колеса -->
+    <circle cx="6" cy="12" r="2" fill="#E11D48"/>
+    <circle cx="18" cy="12" r="2" fill="#E11D48"/>
+    <!-- Окно кабины -->
+    <rect x="3" y="5" width="6" height="4" rx="0.5" fill="#0A39A4"/>
+    <!-- Фары -->
+    <circle cx="2" cy="7" r="0.5" fill="#FFD700"/>
+  </g>
+  
+  <!-- Текст "К" -->
+  <text x="16" y="22" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">К</text>
+</svg>
