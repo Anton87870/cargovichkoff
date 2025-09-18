@@ -14,12 +14,27 @@ function generateOrderNumber() {
 }
 
 export default function AccountPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [orders, setOrders] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [form, setForm] = React.useState({ productType: '', dimensions: '', fromLocation: '', toLocation: '' });
   const [submitting, setSubmitting] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [isSigningOut, setIsSigningOut] = React.useState(false);
+
+  // Показываем загрузку пока проверяем аутентификацию
+  if (authLoading) {
+    return (
+      <div className="container-p py-10">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-blue mx-auto mb-4"></div>
+            <div className="text-gray-600">Загрузка...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) return <Navigate to="/login" replace />;
 
@@ -64,8 +79,17 @@ export default function AccountPage() {
   }
 
   async function signOut() {
-    const supabase = getSupabase();
-    await supabase?.auth.signOut();
+    try {
+      setIsSigningOut(true);
+      const supabase = getSupabase();
+      if (supabase) {
+        await supabase.auth.signOut();
+      }
+      // Редирект произойдет автоматически через AuthProvider
+    } catch (error) {
+      console.error('Ошибка при выходе:', error);
+      setIsSigningOut(false);
+    }
   }
 
   return (
@@ -75,7 +99,13 @@ export default function AccountPage() {
         <h1 className="text-3xl font-bold">Личный кабинет</h1>
         <div className="flex gap-3">
           <Link to="/" className="px-4 py-2 rounded border">На главную</Link>
-          <button onClick={signOut} className="px-4 py-2 rounded bg-gray-900 text-white">Выйти</button>
+          <button 
+            onClick={signOut} 
+            disabled={isSigningOut}
+            className="px-4 py-2 rounded bg-gray-900 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSigningOut ? 'Выход...' : 'Выйти'}
+          </button>
         </div>
       </div>
 
