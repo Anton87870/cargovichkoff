@@ -26,74 +26,109 @@ const transportTypes = [
 
 export default function CostCalculator() {
   const [formData, setFormData] = useState({
+    fullName: '',
+    clientType: '',
     fromCity: '',
     toCity: '',
     customFromCity: '',
     customToCity: '',
     weight: '',
     volume: '',
+    cargoValue: '',
     cargoType: '',
     transportType: '',
     packaging: false,
-    customs: false
+    customs: false,
+    productPhoto: null
   });
 
-  const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showContactOptions, setShowContactOptions] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const calculateCost = () => {
-    setLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      const weight = parseFloat(formData.weight) || 0;
-      const volume = parseFloat(formData.volume) || 0;
-      
-      if (weight === 0 && volume === 0) {
-        setResult({ error: 'Укажите вес или объём груза' });
-        setLoading(false);
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Проверяем размер файла (максимум 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Размер файла не должен превышать 5MB');
         return;
       }
       
-      const transport = transportTypes.find(t => t.value === formData.transportType);
-      const cargo = cargoTypes.find(c => c.value === formData.cargoType);
-      
-      if (!transport || !cargo) {
-        setResult({ error: 'Выберите тип транспорта и груза' });
-        setLoading(false);
+      // Проверяем тип файла (только изображения)
+      if (!file.type.startsWith('image/')) {
+        alert('Пожалуйста, выберите файл изображения');
         return;
       }
       
-      // Calculate base cost
-      let baseCost = transport.baseRate * Math.max(weight, volume * 200); // 200 kg per m³
-      baseCost *= cargo.multiplier;
-      
-      // Add services
-      if (formData.packaging) baseCost += 500;
-      if (formData.customs) baseCost += 15000;
-      
-      // Add margin
-      baseCost *= 1.1;
-      
-      setResult({
-        cost: Math.round(baseCost),
-        days: transport.days,
-        transport: transport.label,
-        cargo: cargo.label
-      });
-      setLoading(false);
-      setShowContactOptions(true);
-    }, 1000);
+      setFormData(prev => ({ ...prev, productPhoto: file }));
+    }
   };
 
-  const handleGetQuote = (method) => {
-    // Здесь можно добавить логику отправки запроса на получение КП
-    alert(`Запрос на получение коммерческого предложения через ${method} отправлен!`);
+  const sendToManager = () => {
+    setLoading(true);
+    
+    // Валидация обязательных полей
+    if (!formData.fullName.trim()) {
+      alert('Пожалуйста, укажите ФИО');
+      setLoading(false);
+      return;
+    }
+    
+    if (!formData.clientType) {
+      alert('Пожалуйста, выберите тип клиента');
+      setLoading(false);
+      return;
+    }
+    
+    const weight = parseFloat(formData.weight) || 0;
+    const volume = parseFloat(formData.volume) || 0;
+    
+    if (weight === 0 && volume === 0) {
+      alert('Укажите вес или объём груза');
+      setLoading(false);
+      return;
+    }
+    
+    const transport = transportTypes.find(t => t.value === formData.transportType);
+    const cargo = cargoTypes.find(c => c.value === formData.cargoType);
+    
+    if (!transport || !cargo) {
+      alert('Выберите тип транспорта и груза');
+      setLoading(false);
+      return;
+    }
+    
+    // Подготовка данных для отправки
+    const requestData = {
+      fullName: formData.fullName,
+      clientType: formData.clientType,
+      fromCity: formData.fromCity === 'Другое' ? formData.customFromCity : formData.fromCity,
+      toCity: formData.toCity === 'Другое' ? formData.customToCity : formData.toCity,
+      weight: formData.weight,
+      volume: formData.volume,
+      cargoValue: formData.cargoValue,
+      cargoType: cargo.label,
+      transportType: transport.label,
+      packaging: formData.packaging,
+      customs: formData.customs,
+      productPhoto: formData.productPhoto ? formData.productPhoto.name : null,
+      timestamp: new Date().toLocaleString('ru-RU')
+    };
+    
+    // Simulate API call - отправка данных менеджеру
+    setTimeout(() => {
+      console.log('Данные отправлены менеджеру:', requestData);
+      
+      // Отправка данных менеджеру в виде таблицы
+      sendToManagerEmail(requestData);
+      
+      setLoading(false);
+      setSubmitted(true);
+    }, 1000);
   };
 
   return (
@@ -110,6 +145,40 @@ export default function CostCalculator() {
         
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg p-8">
+            {/* Поля ФИО и тип клиента */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  ФИО *
+                </label>
+                <input
+                  type="text"
+                  value={formData.fullName}
+                  onChange={(e) => handleInputChange('fullName', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                  placeholder="Введите ваше ФИО"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Тип клиента *
+                </label>
+                <select
+                  value={formData.clientType}
+                  onChange={(e) => handleInputChange('clientType', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                  required
+                >
+                  <option value="">Выберите тип</option>
+                  <option value="individual">Физическое лицо</option>
+                  <option value="entrepreneur">ИП</option>
+                  <option value="legal">Юридическое лицо</option>
+                </select>
+              </div>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -194,6 +263,43 @@ export default function CostCalculator() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Стоимость груза (₽)
+                </label>
+                <input
+                  type="number"
+                  value={formData.cargoValue}
+                  onChange={(e) => handleInputChange('cargoValue', e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                  placeholder="0"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Фото товара
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-blue-700"
+                  />
+                  {formData.productPhoto && (
+                    <div className="mt-2 text-sm text-green-600">
+                      ✓ Файл загружен: {formData.productPhoto.name}
+                    </div>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Максимальный размер: 5MB. Поддерживаемые форматы: JPG, PNG, GIF
+                </p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Тип груза
                 </label>
                 <select
@@ -248,63 +354,23 @@ export default function CostCalculator() {
             </div>
             
             <button
-              onClick={calculateCost}
+              onClick={sendToManager}
               disabled={loading}
               className="w-full bg-brand-blue text-white font-bold py-4 px-6 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {loading ? 'Рассчитываем...' : 'Рассчитать стоимость'}
+              {loading ? 'Отправляем запрос...' : 'Отправить запрос менеджеру'}
             </button>
             
-            {result && (
-              <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-                {result.error ? (
-                  <div className="text-red-600 text-center">{result.error}</div>
-                ) : (
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold text-brand-dark mb-4">Результат расчёта</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                      <div className="bg-white p-4 rounded-lg">
-                        <div className="text-sm text-gray-600">Стоимость доставки</div>
-                        <div className="text-2xl font-bold text-brand-blue">{result.cost.toLocaleString()}₽</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-lg">
-                        <div className="text-sm text-gray-600">Срок доставки</div>
-                        <div className="text-2xl font-bold text-brand-blue">{result.days} дней</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-lg">
-                        <div className="text-sm text-gray-600">Способ</div>
-                        <div className="text-lg font-semibold text-gray-900">{result.transport}</div>
-                      </div>
-                    </div>
-                    
-                    {showContactOptions && (
-                      <div className="bg-white p-6 rounded-lg">
-                        <h4 className="text-lg font-semibold text-brand-dark mb-4">Получить коммерческое предложение</h4>
-                        <p className="text-gray-600 mb-4">Выберите удобный способ получения КП:</p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                          <button 
-                            onClick={() => handleGetQuote('email')}
-                            className="px-6 py-3 bg-brand-blue text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                          >
-                            📧 На почту
-                          </button>
-                          <button 
-                            onClick={() => handleGetQuote('whatsapp')}
-                            className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
-                          >
-                            📱 WhatsApp
-                          </button>
-                          <button 
-                            onClick={() => handleGetQuote('telegram')}
-                            className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
-                          >
-                            ✈️ Telegram
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+            {submitted && (
+              <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg">
+                <div className="text-center">
+                  <div className="text-green-600 text-2xl mb-2">✅</div>
+                  <h3 className="text-xl font-bold text-green-800 mb-2">Запрос отправлен!</h3>
+                  <p className="text-green-700">
+                    Ваш запрос на расчёт стоимости доставки отправлен менеджеру. 
+                    Мы свяжемся с вами в ближайшее время для уточнения деталей и предоставления коммерческого предложения.
+                  </p>
+                </div>
               </div>
             )}
           </div>
@@ -313,3 +379,81 @@ export default function CostCalculator() {
     </section>
   );
 }
+
+// Функция для отправки данных менеджеру в виде таблицы
+const sendToManagerEmail = (data) => {
+  const clientTypeLabels = {
+    'individual': 'Физическое лицо',
+    'entrepreneur': 'ИП',
+    'legal': 'Юридическое лицо'
+  };
+
+  const emailContent = `
+    <h2>Новый запрос на расчёт стоимости доставки</h2>
+    <p><strong>Дата и время:</strong> ${data.timestamp}</p>
+    
+    <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+      <tr style="background-color: #f5f5f5;">
+        <th style="text-align: left; padding: 10px;">Параметр</th>
+        <th style="text-align: left; padding: 10px;">Значение</th>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>ФИО клиента</strong></td>
+        <td style="padding: 10px;">${data.fullName}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Тип клиента</strong></td>
+        <td style="padding: 10px;">${clientTypeLabels[data.clientType]}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Город отправления</strong></td>
+        <td style="padding: 10px;">${data.fromCity}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Город назначения</strong></td>
+        <td style="padding: 10px;">${data.toCity}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Вес (кг)</strong></td>
+        <td style="padding: 10px;">${data.weight || 'Не указан'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Объём (м³)</strong></td>
+        <td style="padding: 10px;">${data.volume || 'Не указан'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Стоимость груза (₽)</strong></td>
+        <td style="padding: 10px;">${data.cargoValue || 'Не указана'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Тип груза</strong></td>
+        <td style="padding: 10px;">${data.cargoType}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Фото товара</strong></td>
+        <td style="padding: 10px;">${data.productPhoto || 'Не загружено'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Способ доставки</strong></td>
+        <td style="padding: 10px;">${data.transportType}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Услуги упаковки</strong></td>
+        <td style="padding: 10px;">${data.packaging ? 'Да (от 500₽)' : 'Нет'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px;"><strong>Таможенное оформление</strong></td>
+        <td style="padding: 10px;">${data.customs ? 'Да (15000₽ за декларацию)' : 'Нет'}</td>
+      </tr>
+    </table>
+    
+    <p><strong>Примечание:</strong> Клиент запросил расчёт стоимости доставки. Необходимо связаться с клиентом для уточнения деталей и предоставления коммерческого предложения.</p>
+  `;
+
+  // Здесь можно добавить реальную отправку email
+  // Например, через EmailJS, SendGrid, или другой сервис
+  console.log('Email для менеджера:', emailContent);
+  
+  // Для демонстрации показываем alert с данными
+  alert(`Данные отправлены менеджеру:\n\nФИО: ${data.fullName}\nТип: ${clientTypeLabels[data.clientType]}\nМаршрут: ${data.fromCity} → ${data.toCity}\nГруз: ${data.cargoType} (${data.weight}кг, ${data.volume}м³)\nСтоимость: ${data.cargoValue || 'Не указана'}₽\nФото: ${data.productPhoto || 'Не загружено'}\nТранспорт: ${data.transportType}`);
+};
