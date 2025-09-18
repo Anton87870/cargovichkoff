@@ -8,8 +8,14 @@ import CostCalculator from '../components/CostCalculator.jsx';
 import TrackingForm from '../components/TrackingForm.jsx';
 import FAQAccordion from '../components/FAQAccordion.jsx';
 import StickyCTA from '../components/StickyCTA.jsx';
+import PartnersSection from '../components/PartnersSection.jsx';
+import LazySection from '../components/LazySection.jsx';
+import { useCriticalResourcePreloading } from '../hooks/usePerformance.js';
 
 export default function HomePage() {
+  // Предзагрузка критических ресурсов
+  useCriticalResourcePreloading();
+
   return (
     <>
       <Helmet>
@@ -22,17 +28,31 @@ export default function HomePage() {
       </Helmet>
       <Hero />
 
-      <ServicesGrid />
+      <LazySection>
+        <ServicesGrid />
+      </LazySection>
 
-      <StepsTimeline />
+      <LazySection>
+        <StepsTimeline />
+      </LazySection>
 
-      <CostCalculator />
+      <LazySection>
+        <CostCalculator />
+      </LazySection>
 
-      <TrackingForm />
+      <LazySection>
+        <TrackingForm />
+      </LazySection>
 
-      <FAQAccordion />
+              <LazySection>
+                <PartnersSection />
+              </LazySection>
 
-      <StickyCTA />
+              <LazySection>
+                <FAQAccordion />
+              </LazySection>
+
+              <StickyCTA />
     </>
   );
 }

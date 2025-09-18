@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import OptimizedVideo from './OptimizedVideo.jsx';
 
 export default function Hero() {
   return (
@@ -7,7 +8,15 @@ export default function Hero() {
       {/* Background Video/Image */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 z-10" />
-        <div className="w-full h-full bg-[url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center bg-no-repeat" />
+        <OptimizedVideo
+          src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4"
+          poster="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+          className="absolute inset-0 w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsInline
+        />
       </div>
       
       <div className="relative z-20 container-p text-center text-white">

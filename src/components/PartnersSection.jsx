@@ -132,6 +132,23 @@ export default function PartnersSection() {
           })}
         </div>
         
+        {/* QR код для XGL */}
+        <div className="mt-12 text-center">
+          <div className="bg-gray-50 rounded-xl p-6 max-w-md mx-auto">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">Связь с партнерами</h3>
+            <div className="flex justify-center">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <img 
+                  src="/images/xgl-qr.svg" 
+                  alt="QR код XGL Logistics" 
+                  className="w-32 h-32 mx-auto"
+                />
+              </div>
+            </div>
+            <p className="text-sm text-gray-600 mt-2">Отсканируйте QR-код для связи с XGL Logistics</p>
+          </div>
+        </div>
+
         {/* Дополнительная информация */}
         <div className="mt-12 text-center">
           <div className="bg-brand-blue/5 rounded-xl p-6 max-w-4xl mx-auto">

@@ -16,10 +16,11 @@ function Header() {
         </NavLink>
         <nav className="hidden md:flex items-center gap-6">
           <NavLink to="/" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Главная</NavLink>
-          <NavLink to="/services" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Услуги</NavLink>
-          <NavLink to="/calculator" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Калькулятор</NavLink>
-          <NavLink to="/tracking" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Отслеживание</NavLink>
-          <NavLink to="/contacts" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Контакты</NavLink>
+                  <NavLink to="/services" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Услуги</NavLink>
+                  <NavLink to="/calculator" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Калькулятор</NavLink>
+                  <NavLink to="/tracking" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Отслеживание</NavLink>
+                  <NavLink to="/about" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>О компании</NavLink>
+                  <NavLink to="/contacts" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Контакты</NavLink>
           {user ? (
             <NavLink to="/account" className={({isActive})=>`hover:text-brand-blue ${isActive?'text-brand-blue font-semibold':''}`}>Кабинет</NavLink>
           ) : (
@@ -37,10 +38,11 @@ function Header() {
         <div className="md:hidden border-t border-gray-200 bg-white">
           <div className="container-p py-3 flex flex-col gap-3">
             <NavLink onClick={()=>setOpen(false)} to="/">Главная</NavLink>
-            <NavLink onClick={()=>setOpen(false)} to="/services">Услуги</NavLink>
-            <NavLink onClick={()=>setOpen(false)} to="/calculator">Калькулятор</NavLink>
-            <NavLink onClick={()=>setOpen(false)} to="/tracking">Отслеживание</NavLink>
-            <NavLink onClick={()=>setOpen(false)} to="/contacts">Контакты</NavLink>
+                    <NavLink onClick={()=>setOpen(false)} to="/services">Услуги</NavLink>
+                    <NavLink onClick={()=>setOpen(false)} to="/calculator">Калькулятор</NavLink>
+                    <NavLink onClick={()=>setOpen(false)} to="/tracking">Отслеживание</NavLink>
+                    <NavLink onClick={()=>setOpen(false)} to="/about">О компании</NavLink>
+                    <NavLink onClick={()=>setOpen(false)} to="/contacts">Контакты</NavLink>
             {user ? (
               <NavLink onClick={()=>setOpen(false)} to="/account">Кабинет</NavLink>
             ) : (

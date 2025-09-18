@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
+import { initializePerformanceOptimizations } from './utils/performanceOptimization.js';
 import RootLayout from './ui/RootLayout.jsx';
 import HomePage from './pages/HomePage.jsx';
 import OrderPage from './pages/OrderPage.jsx';
@@ -38,6 +39,9 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+// Инициализация оптимизаций производительности
+initializePerformanceOptimizations();
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

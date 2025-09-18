@@ -151,7 +151,7 @@ export default function ContactsPage() {
                   <div className="flex justify-center">
                     <div className="bg-white p-4 rounded-lg shadow-sm">
                       <img 
-                        src="/images/your-qr-code.png" 
+                        src="/images/wechat-qr.svg" 
                         alt="QR код для WeChat" 
                         className="w-32 h-32 mx-auto"
                       />
