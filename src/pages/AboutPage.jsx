@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import PartnersSection from '../components/PartnersSection.jsx';
 
 export default function AboutPage() {
   return (
@@ -168,6 +169,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Partners Section */}
+      <PartnersSection />
     </>
   );
 }

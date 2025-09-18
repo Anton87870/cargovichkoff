@@ -8,7 +8,6 @@ import CostCalculator from '../components/CostCalculator.jsx';
 import TrackingForm from '../components/TrackingForm.jsx';
 import FAQAccordion from '../components/FAQAccordion.jsx';
 import StickyCTA from '../components/StickyCTA.jsx';
-import PartnersSection from '../components/PartnersSection.jsx';
 import LazySection from '../components/LazySection.jsx';
 import { useCriticalResourcePreloading } from '../hooks/usePerformance.js';
 
@@ -43,10 +42,6 @@ export default function HomePage() {
       <LazySection>
         <TrackingForm />
       </LazySection>
-
-              <LazySection>
-                <PartnersSection />
-              </LazySection>
 
               <LazySection>
                 <FAQAccordion />
